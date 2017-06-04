@@ -2833,10 +2833,11 @@ var Editor;
 
 module.exports = Editor = (function() {
   function Editor(loader) {
-    var $editorBox, editorWidthPercentage;
+    var $editorBox, editorWidthPercentage, hasShow;
     this.loader = loader;
     editorWidthPercentage = 30;
-    $editorBox = $($.parseHTML('<div class="column"></div>'));
+    hasShow = true;
+    $editorBox = $($.parseHTML('<div id = "editor-column" class="column"></div>'));
     $editorBox.width(editorWidthPercentage + '%');
     $('#net-column').width((100 - editorWidthPercentage) + '%');
     $('#master-container').prepend($editorBox);
@@ -2848,6 +2849,21 @@ module.exports = Editor = (function() {
     this.editor.on('keydown', (function(_this) {
       return function(cm, e) {
         return _this.onKeyDown(e);
+      };
+    })(this));
+    $('#net-column').on('dblclick', (function(_this) {
+      return function() {
+        if (hasShow === true) {
+          hasShow = false;
+          $("#editor-column").hide();
+          $('#editor-column').width(0 + '%');
+          return $('#net-column').width(100 + '%');
+        } else {
+          hasShow = true;
+          $("#editor-column").show();
+          $('#editor-column').width(30 + '%');
+          return $('#net-column').width(70 + '%');
+        }
       };
     })(this));
   }
